@@ -301,7 +301,7 @@ MD.Editor = function(){
                 a.href = url;
                 a.download = filename;
                 document.body.appendChild(a);
-                a.click();
+                //a.click();
                 setTimeout(function () {
                     document.body.removeChild(a);
                     window.URL.revokeObjectURL(url);
