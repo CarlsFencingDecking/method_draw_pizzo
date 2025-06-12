@@ -435,16 +435,11 @@ MD.Editor = function(){
         });
       }}
 
-
-
   setTimeout(function () {
-    if (window.svgCanvas && typeof svgCanvas.addSvgElementFromJson === 'function') {
-      console.log("📤 svgCanvas ready, signaling method_draw_ready");
-      window.parent.postMessage({ type: 'method_draw_ready' }, '*');
-    } else {
-      console.error("❌ svgCanvas not ready when signaling readiness");
-    }
-  }, 500);
+  window.parent.postMessage({ type: 'method_draw_ready' }, '*');
+}, 1000);
+
+
 }
 
 
@@ -455,6 +450,8 @@ window.addEventListener('message', function(event) {
   if (event.data && event.data.type === 'loadImage') {
     var dataUri = event.data.image;
     console.log("📥 Received loadImage message");
+    console.log(event)
+    console.log(typeof(dataUri), 'type')
 
     if (dataUri && typeof dataUri === 'string') {
       var img = new Image();
