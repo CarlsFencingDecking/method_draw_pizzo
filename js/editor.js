@@ -443,7 +443,8 @@ window.parent.postMessage({ type: 'method_draw_ready' }, '*');
 
 window.addEventListener('message', function(event) {
   if (event.data && event.data.type === 'loadImage') {
-    var dataUri = event.data.image;
+    console.log(event)
+    var dataUri = event.data.pngDataUri;
     console.log(dataUrl, 'data')
 
     if (dataUri && typeof dataUri === 'string') {
