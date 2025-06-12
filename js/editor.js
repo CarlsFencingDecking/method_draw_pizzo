@@ -435,12 +435,23 @@ MD.Editor = function(){
         });
       }}
 
-  setTimeout(function () {
-  window.parent.postMessage({ type: 'method_draw_ready' }, '*');
-}, 1000);
-
-
 }
+
+function waitForSvgCanvasReady(retries) {
+  if (window.svgCanvas && typeof svgCanvas.addSvgElementFromJson === 'function') {
+    console.log("📤 svgCanvas finally ready, sending method_draw_ready");
+    window.parent.postMessage({ type: 'method_draw_ready' }, '*');
+  } else if (retries > 0) {
+    setTimeout(function() {
+      waitForSvgCanvasReady(retries - 1);
+    }, 200);
+  } else {
+    console.error("❌ svgCanvas was never ready");
+  }
+}
+
+// Start checking after MD.Editor ends
+waitForSvgCanvasReady(20); // tries for 4 seconds
 
 
 //GANNON ADDED TO LOAD IN
