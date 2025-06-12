@@ -434,40 +434,63 @@ MD.Editor = function(){
           });
         });
       }}
+
+
+
+  setTimeout(function () {
+    if (window.svgCanvas && typeof svgCanvas.addSvgElementFromJson === 'function') {
+      console.log("📤 svgCanvas ready, signaling method_draw_ready");
+      window.parent.postMessage({ type: 'method_draw_ready' }, '*');
+    } else {
+      console.error("❌ svgCanvas not ready when signaling readiness");
+    }
+  }, 500);
 }
 
 
 //GANNON ADDED TO LOAD IN
-window.parent.postMessage({ type: 'method_draw_ready' }, '*');
 
 
 window.addEventListener('message', function(event) {
   if (event.data && event.data.type === 'loadImage') {
-    console.log(event)
     var dataUri = event.data.image;
-
+    console.log("📥 Received loadImage message");
 
     if (dataUri && typeof dataUri === 'string') {
       var img = new Image();
-      img.onload = function() {
-        svgCanvas.setMode("select");
-        var newImage = svgCanvas.addSvgElementFromJson({
-          element: "image",
-          attr: {
-            x: 0,
-            y: 0,
-            width: img.width,
-            height: img.height,
-            id: svgCanvas.getNextId(),
-            preserveAspectRatio: "none",
-            "xlink:href": dataUri
-          }
-        });
-        svgCanvas.selectOnly([newImage], true);
-        svgCanvas.call("changed", [newImage]);
+      img.onload = function () {
+        if (!svgCanvas || !svgCanvas.getSvgRoot) {
+          console.error("❌ svgCanvas not ready");
+          return;
+        }
+
+        console.log("✅ Injecting image into canvas (manual)");
+
+        var svgroot = svgCanvas.getSvgRoot();
+
+        var imageElem = document.createElementNS("http://www.w3.org/2000/svg", "image");
+        imageElem.setAttribute("x", "10");
+        imageElem.setAttribute("y", "10");
+        imageElem.setAttribute("width", img.width || 300);
+        imageElem.setAttribute("height", img.height || 300);
+        imageElem.setAttributeNS("http://www.w3.org/1999/xlink", "href", dataUri);
+        imageElem.setAttribute("id", svgCanvas.getNextId());
+
+        svgroot.appendChild(imageElem);
+
+        svgCanvas.selectOnly([imageElem], true);
+        svgCanvas.call("changed", [imageElem]);
       };
+
+      img.onerror = function () {
+        console.error("⛔ Failed to load image");
+      };
+
       img.src = dataUri;
+    } else {
+      console.warn("⚠️ Invalid image data URI");
     }
   }
 });
+
 
