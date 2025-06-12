@@ -442,6 +442,7 @@ MD.Editor = function(){
 window.addEventListener('message', function(event) {
   if (event.data && event.data.type === 'loadImage') {
     var dataUri = event.data.image;
+    console.log(dataUrl, 'data')
 
     if (dataUri && typeof dataUri === 'string') {
       var img = new Image();
