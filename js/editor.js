@@ -435,3 +435,35 @@ MD.Editor = function(){
         });
       }}
 }
+
+
+//GANNON ADDED TO LOAD IN
+
+window.addEventListener('message', function(event) {
+  if (event.data && event.data.type === 'loadImage') {
+    var dataUri = event.data.image;
+
+    if (dataUri && typeof dataUri === 'string') {
+      var img = new Image();
+      img.onload = function() {
+        svgCanvas.setMode("select");
+        var newImage = svgCanvas.addSvgElementFromJson({
+          element: "image",
+          attr: {
+            x: 0,
+            y: 0,
+            width: img.width,
+            height: img.height,
+            id: svgCanvas.getNextId(),
+            preserveAspectRatio: "none",
+            "xlink:href": dataUri
+          }
+        });
+        svgCanvas.selectOnly([newImage], true);
+        svgCanvas.call("changed", [newImage]);
+      };
+      img.src = dataUri;
+    }
+  }
+});
+
