@@ -438,6 +438,8 @@ MD.Editor = function(){
 
 
 //GANNON ADDED TO LOAD IN
+window.parent.postMessage({ type: 'method_draw_ready' }, '*');
+
 
 window.addEventListener('message', function(event) {
   if (event.data && event.data.type === 'loadImage') {
