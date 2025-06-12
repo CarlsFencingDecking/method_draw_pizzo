@@ -289,6 +289,8 @@ MD.Editor = function(){
                 pngDataUri: datauri
             }, '*');
 
+          /*
+
             var filename = "Method Draw Image";
             var type = 'image/png';
             var file = svgedit.utilities.dataURItoBlob(datauri, type);
@@ -301,12 +303,14 @@ MD.Editor = function(){
                 a.href = url;
                 a.download = filename;
                 document.body.appendChild(a);
-                //a.click();
+                a.click();
                 setTimeout(function () {
                     document.body.removeChild(a);
                     window.URL.revokeObjectURL(url);
                 }, 0);
             }
+
+            */
         }
     });
   }
