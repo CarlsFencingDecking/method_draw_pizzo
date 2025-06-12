@@ -444,8 +444,8 @@ window.parent.postMessage({ type: 'method_draw_ready' }, '*');
 window.addEventListener('message', function(event) {
   if (event.data && event.data.type === 'loadImage') {
     console.log(event)
-    var dataUri = event.data.pngDataUri;
-    console.log(dataUrl, 'data')
+    var dataUri = event.data.image;
+
 
     if (dataUri && typeof dataUri === 'string') {
       var img = new Image();
