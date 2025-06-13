@@ -373,6 +373,7 @@ MD.Editor = function(){
   }
 
   function loadFromUrl(url, cb){
+    console.log('this is the import function')
     if(!cb) cb = function(){/*noop*/};
     $.ajax({
       'url': url,
