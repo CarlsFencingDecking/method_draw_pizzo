@@ -276,7 +276,7 @@ MD.Editor = function(){
   });
 
   function exportHandler(window, data) {
-    var issues = data.issues;
+    //var issues = data.issues;
 
     if (!$('#export_canvas').length) {
         $('<canvas>', { id: 'export_canvas' }).hide().appendTo('body');
