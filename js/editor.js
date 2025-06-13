@@ -269,7 +269,8 @@ MD.Editor = function(){
 
   window.addEventListener('message', function(event) {
     if (event.data && event.data.type === 'saveImage') {
-        console.lgg('received from netsuite')
+        console.log('received from netsuite')
+        exportHandler()
       
     }
   });
