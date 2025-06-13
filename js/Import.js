@@ -136,3 +136,48 @@ MD.Import = function(){
   this.loadSvgString = loadSvgString;
 
 }
+
+
+// ✅ Paste this AFTER the MD.Import function block
+window.addEventListener('message', function(event) {
+  if (event.data && event.data.type === 'loadImage') {
+    var dataUri = event.data.image;
+    console.log("📥 Received base64 image for import:", dataUri);
+
+    if (dataUri && typeof dataUri === 'string') {
+      var img = new Image();
+      img.onload = function () {
+        var img_width = img.width;
+        var img_height = img.height;
+
+        var newImage = svgCanvas.addSvgElementFromJson({
+          "element": "image",
+          "attr": {
+            "x": 0,
+            "y": 0,
+            "width": img_width,
+            "height": img_height,
+            "id": svgCanvas.getNextId(),
+            "style": "pointer-events:inherit"
+          }
+        });
+
+        svgCanvas.setHref(newImage, dataUri);
+        svgCanvas.selectOnly([newImage]);
+        svgCanvas.alignSelectedElements("m", "page");
+        svgCanvas.alignSelectedElements("c", "page");
+        editor.panel.updateContextPanel();
+
+        console.log("✅ Image injected into canvas.");
+      };
+
+      img.onerror = function () {
+        console.error("⛔ Failed to load image from data URI.");
+      };
+
+      img.src = dataUri;
+    } else {
+      console.warn("⚠️ Received invalid image data.");
+    }
+  }
+});
