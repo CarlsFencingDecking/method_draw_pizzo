@@ -445,66 +445,6 @@ MD.Editor = function(){
 
 }
 
-function waitForSvgCanvasReady(retries) {
-  if (window.svgCanvas && typeof svgCanvas.addSvgElementFromJson === 'function') {
-    console.log("📤 svgCanvas finally ready, sending method_draw_ready");
-    window.parent.postMessage({ type: 'method_draw_ready' }, '*');
-  } else if (retries > 0) {
-    setTimeout(function() {
-      waitForSvgCanvasReady(retries - 1);
-    }, 200);
-  } else {
-    console.error("❌ svgCanvas was never ready");
-  }
-}
-
-// Start checking after MD.Editor ends
-waitForSvgCanvasReady(20); // tries for 4 seconds
 
 
-//GANNON ADDED TO LOAD IN
 
-
-window.addEventListener('message', function(event) {
-  if (event.data && event.data.type === 'loadImage') {
-    var dataUri = event.data.image;
-    console.log("📥 Received loadImage message");
-    console.log(event)
-    console.log(typeof(dataUri), 'type')
-
-    if (dataUri && typeof dataUri === 'string') {
-      var img = new Image();
-      img.onload = function () {
-        if (!svgCanvas || !svgCanvas.getSvgRoot) {
-          console.error("❌ svgCanvas not ready");
-          return;
-        }
-
-        console.log("✅ Injecting image into canvas (manual)");
-
-        var svgroot = svgCanvas.getSvgRoot();
-
-        var imageElem = document.createElementNS("http://www.w3.org/2000/svg", "image");
-        imageElem.setAttribute("x", "10");
-        imageElem.setAttribute("y", "10");
-        imageElem.setAttribute("width", img.width || 300);
-        imageElem.setAttribute("height", img.height || 300);
-        imageElem.setAttributeNS("http://www.w3.org/1999/xlink", "href", dataUri);
-        imageElem.setAttribute("id", svgCanvas.getNextId());
-
-        svgroot.appendChild(imageElem);
-
-        svgCanvas.selectOnly([imageElem], true);
-        svgCanvas.call("changed", [imageElem]);
-      };
-
-      img.onerror = function () {
-        console.error("⛔ Failed to load image");
-      };
-
-      img.src = dataUri;
-    } else {
-      console.warn("⚠️ Invalid image data URI");
-    }
-  }
-});
