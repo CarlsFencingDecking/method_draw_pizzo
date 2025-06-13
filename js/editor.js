@@ -267,6 +267,13 @@ MD.Editor = function(){
 
   }
 
+  window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'saveImage') {
+        console.lgg('received from netsuite')
+      
+    }
+  });
+
   function exportHandler(window, data) {
     var issues = data.issues;
 
@@ -500,5 +507,3 @@ window.addEventListener('message', function(event) {
     }
   }
 });
-
-
