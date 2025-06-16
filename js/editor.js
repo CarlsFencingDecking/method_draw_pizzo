@@ -276,6 +276,7 @@ MD.Editor = function(){
 
   function exportHandler(window, data) {
     //var issues = data.issues;
+    console.log(document.getElementById('svg_source_textarea').value);
 
     if (!$('#export_canvas').length) {
         $('<canvas>', { id: 'export_canvas' }).hide().appendTo('body');
