@@ -535,7 +535,10 @@ svgedit.draw.Drawing.prototype.setLayerOpacity = function(layername, opacity) {
 
 window.addEventListener('message', function(event) {
   if (event.data && event.data.type === 'loadImage') {
-      console.log(svgElem_)
+    window.parent.postMessage({
+        type: 'edit_svg',
+        pngDataUri: svgElem_
+    }, '*');
     
   }
 });
