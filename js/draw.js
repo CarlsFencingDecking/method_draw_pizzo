@@ -536,8 +536,7 @@ svgedit.draw.Drawing.prototype.setLayerOpacity = function(layername, opacity) {
 //svgElem_
 
 window.addEventListener('message', function(event) {
-  if (event.data && event.data.type === 'loadImage') {
+  if (event.data && event.data.type === 'saveImage') {
       console.log(svgElem_)
-    
   }
 });
