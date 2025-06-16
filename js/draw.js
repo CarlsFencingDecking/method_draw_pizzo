@@ -533,12 +533,11 @@ svgedit.draw.Drawing.prototype.setLayerOpacity = function(layername, opacity) {
 
 })();
 
+//svgElem_
+
 window.addEventListener('message', function(event) {
   if (event.data && event.data.type === 'loadImage') {
-    window.parent.postMessage({
-        type: 'edit_svg',
-        pngDataUri: svgElem_
-    }, '*');
+      console.log(svgElem_)
     
   }
 });
