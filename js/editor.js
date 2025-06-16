@@ -24,6 +24,19 @@ MD.Editor = function(){
     });
   }
 
+  function clearOnLoad(){
+    var dims = state.get("canvasSize");
+    state.set("canvasMode", "select")
+    svgCanvas.clear();
+    svgCanvas.setResolution(dims[0], dims[1]);
+    editor.canvas.update(true);
+    editor.zoom.reset();
+    editor.panel.updateContextPanel();
+    editor.paintBox.fill.prep();
+    editor.paintBox.stroke.prep();
+    svgCanvas.runExtensions('onNewDocument');  
+  }clearOnLoad();
+
   function save(){
     _self.menu.flash($('#file_menu'));
     svgCanvas.save();
